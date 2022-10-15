@@ -1,0 +1,78 @@
+---
+title: "Codebook"
+author: "Hussain Motiwala"
+date: "2022-10-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+The data collected from accelometers from the Samsung Galaxy S smartphone. 
+
+# Variables:
+
+**subjectid** - The data has been collected from 30 participants subject each participating in various activities. Each subject has been given a subject id which ranges from 1 to 30. 
+
+*Modification done* - The raw data for subjectid was separate. As part of the data wrangling this data was merged with the main data
+
+**activity** - The data is corresponding six types of activity. The details of activity is given below.
+
+*Modification done* - The raw data for activity was separate like subjectid. Similar to subjectid it was merged with the main data. Additionally the activity was mapped to a number from 1-6, as part of data wrangling this activity id was mapped to activity description and the activity description is the activity column of the tidy dataset
+
+```{r, echo=FALSE}
+source("~/TidyData/run_analysis.R")
+unique(joint[,2])
+```
+
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+
+*Modification done* - For each combination of this data, the mean and standard deviation of the multiple iteration of training and testing measurement is in the tidy dataset. There were other parameters present in the raw data, but as part of data wrangling only the mean and standard deviation of the measurement were extracted.
+
+In the raw data, measurements were named in the following manner
+
+* tBodyAcc-XYZ
+* tGravityAcc-XYZ
+* tBodyAccJerk-XYZ
+* tBodyGyro-XYZ
+* tBodyGyroJerk-XYZ
+* tBodyAccMag
+* tGravityAccMag
+* tBodyAccJerkMag
+* tBodyGyroMag
+* tBodyGyroJerkMag
+* fBodyAcc-XYZ
+* fBodyAccJerk-XYZ
+* fBodyGyro-XYZ
+* fBodyAccMag
+* fBodyAccJerkMag
+* fBodyGyroMag
+* fBodyGyroJerkMag
+
+As part of data wrangling t which is for Time Domain Signal was replaced with Time_ and f which is for Frequency Domain Signal was replaced with Frequency_
+
+After the measurement variable the - symbol is replaced by _ followed by the direction either x,y or z
+
+Lastly separated by _ is mean for mean data and std for standard deviation data
+
+The summary of the 66 measurement variables is as per below summary
+
+```{r, echo=FALSE}
+source("~/TidyData/run_analysis.R")
+summary(joint%>%select(-c(subjectid,activity)))
+```
+
+Finally a summary table was created with the average of each variable for combination of each activity and each subject.
+
+The summary variables naming is avg_ prefixed to the measurement variable in tidy data set
+
+There were 180 entries in the summary table with 68 variable, two factor variable subjectid and activity and 66 measurement variables

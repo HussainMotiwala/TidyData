@@ -1,5 +1,5 @@
 #Invoking tidyverse library
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse,warn.conflicts = FALSE))
 #Collecting Data
 #Create data subdirectory in project if it does not exist
 if(!file.exists("./data")){dir.create("./data")}
@@ -18,12 +18,12 @@ unzip("./data/UCI HAR Dataset.zip")
 #Read Testing and training data
 train<-read.table("./UCI HAR Dataset/train/X_train.txt",colClasses = "numeric")
 test<-read.table("./UCI HAR Dataset/test/X_test.txt",colClasses = "numeric")
+
+#Step 1 : Merges the training and the test sets to create one data set.
 #Combine the data
 joint<-rbind(train,test)
 #Delete the uncombined data
 rm(test,train)
-
-#Step 1 : Merges the training and the test sets to create one data set.
 #Read the features data
 features<-read.table("./UCI HAR Dataset/features.txt")
 #Assign features data as column name for the combined data
@@ -79,10 +79,10 @@ joint<-joint%>%rename_with(~gsub("^f","Frequency_",
 
 #Step 5 : From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 #Perform activity by using group_by, summary and across
-summary<-joint%>%group_by(subjectid,activity)%>%
-  summarise(across(where(is.numeric),mean,.names="avg_{.col}"))
+suppressMessages(summary<-joint%>%group_by(subjectid,activity)%>%
+  summarise(across(where(is.numeric),mean,.names="avg_{.col}")))
 
-#Write the main data to csv if not done alreadt
+#Write the main data to csv if not done already
 if(!file.exists("./data/tidydata.csv")){
   write.csv(joint,"./data/tidydata.csv",row.names = FALSE)
 }
