@@ -83,11 +83,11 @@ suppressMessages(summary<-joint%>%group_by(subjectid,activity)%>%
   summarise(across(where(is.numeric),mean,.names="avg_{.col}")))
 
 #Write the main data to csv if not done already
-if(!file.exists("./data/tidydata.csv")){
-  write.csv(joint,"./data/tidydata.csv",row.names = FALSE)
+if(!file.exists("./data/tidydata.txt")){
+  write.table(joint,"./data/tidydata.txt",row.names = FALSE)
 }
 #Write the summary data to csv if not done already
-if(!file.exists("./data/summary.csv")){
-  write.csv(summary,"./data/summary.csv",row.names = FALSE)
+if(!file.exists("./data/summary.txt")){
+  write.table(summary,"./data/summary.txt",row.names = FALSE)
 }
 
